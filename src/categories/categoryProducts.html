@@ -1,0 +1,155 @@
+﻿<template>
+    <section>
+        <div>
+            <br />
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <h5> List categories</h5>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="input-group">
+                            <input type="text" value.bind="datasource.searchCriteria" keyup.delegate="onKeyUp($event)"
+                                   class="form-control" placeholder="Category Name, Description">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-success" tabindex="-1"
+                                        click.trigger="searchAll()">
+                                    Search
+                                </button>
+                                <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" tabindex="-1">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu pull-right"></ul>
+                            </div><!-- /btn-group -->
+
+                        </div><!-- /input-group -->
+                        <br />
+                        <table class="table table-condensed table-responsive">
+                            <thead>
+                                <tr>
+                                    <td>category</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr repeat.for="cat of  datasource.displaySource">
+                                    <td><a href="#" click.delegate="$parent.itemChange(cat)">${cat.categoryName}</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <data-source source.bind="datasource" click.delegate="itemChange(datasource.currentRecord)"></data-source>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="panel panel-default">
+
+                    <div class="panel-body">
+                        <section>
+
+                            <ul class="nav nav-tabs" id="categoriesAndProductTab">
+                                <li><a href="#categoriesAppTab" data-toggle="tab">Categories</a></li>
+                                <li><a href="#CategoryProductsAppTab" data-toggle="tab">Products</a></li>
+                            </ul>
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="categoriesAppTab">
+                                    <div>
+                                        <br />
+                                        <form class="form-horizontal" role="form">
+                                            <div>
+                                                <div>
+                                                    <div class="form-group">
+                                                        <label for="CategoryID" class="control-label col-md-3">Category ID</label>
+                                                        <div class="col-md-6">
+                                                            <input type="text" value.bind="datasource.currentRecord.categoryID" id="CategoryID" name="CategoryID" class="form-control" title="CategoryID" placeholder="CategoryID" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="CategoryName" class="control-label col-md-3">Category Name</label>
+                                                        <div class="col-md-6">
+                                                            <input type="text" value.bind="datasource.currentRecord.categoryName" id="CategoryName" name="CategoryName" class="form-control" title="CategoryName" placeholder="CategoryName" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="Description" class="control-label col-md-3">Description</label>
+                                                        <div class="col-md-6">
+                                                            <input type="text" value.bind="datasource.currentRecord.description" id="Description" name="Description" class="form-control" title="Description" placeholder="Description" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="col-md-6 col-md-offset-2">
+                                                        <!--<a route-href="route:categories;" class="btn btn-default"><span class="glyphicon glyphicon-hand-left"> </span>  Go back</a>-->
+                                                        <input type="submit" value="Save" class="btn btn-primary">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="CategoryProductsAppTab">
+                                    <div class="col-md-12">
+                                        <br />
+                                        <div class="panel panel-success">
+                                            <div class="panel-heading">Products </div>
+                                            <table class="table table-condensed">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Product Name</th>
+                                                        <th>Price</th>
+                                                        <th>In Stock</th>
+                                                        <th> On Order</th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr repeat.for="prod of  dataSourceProducts.displaySource">
+                                                        <td>${prod.productName}</td>
+                                                        <!--<td>${prod.unitPrice} </td>-->
+                                                        <td>${prod.unitPrice | currencyFormat:'£'} </td>
+                                                        <td>${prod.unitsInStock}</td>
+                                                        <td>${prod.unitsOnOrder}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <p></p>
+                                            <data-source source.bind="dataSourceProducts"></data-source>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                              <a route-href="route: codeView; params.bind: {id:'categoryProducts'}" class="btn btn-primary pull-right">Code Details <i class="fa fa-code" aria-hidden="true"></i> </a>
+                             </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+
+    <div id="confirmModal" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Confirm Delete</h3>
+                </div>
+                <div class="modal-body">
+                    <span>Category To Delete</span> <span>${datasource.currentRecord.categoryName}</span>
+                    <p>Deleting this item cannon be undone.  Are you sure?</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" data-dismiss="modal">Close</button>
+                    <button class="btn btn-danger" data-bind="click:   $root.deleteProduct">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

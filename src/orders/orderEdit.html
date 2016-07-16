@@ -1,0 +1,446 @@
+﻿<template>
+    <section>
+          <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <h5> Customer Orders</h5>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="input-group">
+                            <input type="text" value.bind="productDatasource.searchCriteria" keyup.delegate="onKeyUp($event)"
+                                   class="form-control" placeholder="Product Name">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-success" tabindex="-1"
+                                        click.trigger="searchProductsAll()">
+                                    Search
+                                </button>
+                                <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" tabindex="-1">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu pull-right"></ul>
+                            </div><!-- /btn-group -->
+
+                        </div><!-- /input-group -->
+                        <br />
+                        <table class="table table-condensed">
+                          
+
+                            <thead>
+                                <tr>
+                                    <td>Product Name</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr repeat.for="product of  productDatasource.displaySource">
+                                    <td><a href="#" click.delegate="$parent.addProductToOrder(product)">${product.productName}</a></td>
+                                    <td align="right">${product.unitPrice | currencyFormat:'£'}</td>
+                                    <td><a href="#" click.delegate="$parent.addProductToOrder(product)"><i class="fa fa-shopping-cart fa-lg"></i></a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!--<compose view-model="../modules/data-source" click.delegate="itemChange(datasource.currentRecord)" model.bind="productDatasource"></compose>-->
+                        <data-source source.bind="productDatasource" click.delegate="itemChange(datasource.currentRecord)"></data-source>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <div class="row">
+                                <div class="col-md-7"><h4 class="panel-title"><strong>Bill To:</strong> </h4></div>
+                                <div class="col-md-5"><h4 class="panel-title pull-right"><strong>Invoice No: ${currentCustomerOrder.orderID }</strong></h4></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12" data-bind="with: ordersModel.currentRecord">
+                                <div class="col-md-6">
+                                    <div class="panel panel-success">
+                                        <div class="panel-heading">
+                                            <div class="row">
+                                                <div class="col-md-7">
+                                                    <h3 class="panel-title">Bill To:</h3>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <a href="#" click.delegate="showSelectCustomer()" class="pull-right"><i class="fa fa-user-plus fa-lg"></i></a>
+                                                </div>
+                                            </div>
+                                               
+                                               
+                                            </div>
+                                        <div class="panel-body">
+                                            <span>${currentCustomerOrder.companyName}</span> <br />
+                                            <span>${currentCustomerOrder.address}</span><br />
+                                            <span>${currentCustomerOrder.city}</span><br />
+                                            <span>${currentCustomerOrder.postalCode}</span><br />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="panel panel-success">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">Ship To:</h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            <span>${currentCustomerOrder.shipName}</span> <br />
+                                            <span>${currentCustomerOrder.shipAddress}</span><br />
+                                            <span>${currentCustomerOrder.shipCity}</span><br />
+                                            <span>${currentCustomerOrder.shipPostalCode}</span><br />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" data-bind="with: ordersModel.currentRecord">
+                                <div class="col-md-12">
+                                    <div class="panel panel-success">
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <span>Acc:</span> <span>${currentCustomerOrder.customerID}</span>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <span>Date:</span> <span >${currentCustomerOrder.orderDate | dateFormat:'DD/MM/YYYY'}</span>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <span>Req:</span> <span >${currentCustomerOrder.requiredDate | dateFormat:'DD/MM/YYYY'}</span>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <span>Ship:</span> <span>${currentCustomerOrder.shippedDate | dateFormat:'DD/MM/YYYY'}</span>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="panel panel-success">
+
+                                    <div class="panel-heading">Order Details</div>
+
+                                    <table class="table table-condensed">
+                                        <thead>
+                                            <tr>
+                                                <td align="right"></td>
+                                                <td><strong>Product </strong> </td>
+                                                <td align="right"><strong>Unit Price </strong></td>
+                                                <td align="right"><strong>Quantity</strong></td>
+                                                <td align="right"><strong>Discount</strong></td>
+                                                <td align="right"><strong>Total</strong></td>
+                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr repeat.for="od of  currentOrderDetails">
+                                                <td align="right"><a href="#" click.delegate="$parent.showDeleteOrderDetails(od)" class="pull-right"><i class="fa fa-trash-o fa-lg"></i></a></td>
+                                                <td>${od.productName}</td>
+                                                <td align="right">${od.unitPrice | currencyFormat:'£'}</td>
+                                                <td align="right">${od.quantity}</td>
+                                                <td align="right">${od.discount | numberFormat:'0.00%'}</td>
+                                                <td align="right">${od.extendedPrice | currencyFormat:'£'}</td>
+                                                
+                                                
+                                            </tr>
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="col-md-3 col-md-offset-9">
+                                    <div class="panel panel-default">
+                                        <table class="table table-condensed">
+                                            <tr>
+                                                <td>Sub Total</td>
+                                                <td  align="right">${subtotal | currencyFormat:'£'}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>VAT</td>
+                                                <td  align="right">${VAT | currencyFormat:'£'}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Total</td>
+                                                <td align="right">${total | currencyFormat:'£'}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                              <a route-href="route: codeView; params.bind: {id:'CreateOrd'}" class="btn btn-primary pull-right">Code Details <i class="fa fa-code" aria-hidden="true"></i> </a>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+    </section>
+    <div id="selectCustomerModal" class="modal fade">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Select Customer</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="input-group">
+                                <input type="text" value.bind="customersDatasource.searchCriteria" keyup.delegate="customeronKeyUp($event)"
+                                       class="form-control" placeholder="Customers Company or Contry">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-success" tabindex="-1"
+                                            click.trigger="searchCustomersAll()">
+                                        Search
+                                    </button>
+                                    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" tabindex="-1">
+                                        <span class="caret"></span>
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <ul class="dropdown-menu pull-right"></ul>
+                                </div><!-- /btn-group -->
+
+                            </div><!-- /input-group -->
+                            <table class="table table-condensed table-responsive">
+                                <thead>
+                                    <tr>
+                                        <td>Account</td>
+                                        <td>Company Name</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr repeat.for="customer of  customersDatasource.displaySource">
+                                        <td><a href="#" click.delegate="$parent.getCustomerSelected(customer)">${customer.customerID}</a></td>
+                                        <td>${customer.companyName}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <!--<compose view-model="../modules/data-source" model.bind="customersDatasource"></compose>-->
+                            <data-source source.bind="customersDatasource"></data-source>
+
+                        </div>
+                        <div class="col-md-7">
+                            <form class="form-horizontal" validate.bind="currentCustomerOrder.validation" id="formNewCustomer" role="form" submit.trigger="saveNewCustomer()">
+                                <div class="row">
+                                    <div class="form-group" style="margin-bottom:2px">
+                                        <label for="CompanyName" class="control-label col-md-3">Bill to</label>
+                                        <div class="col-md-8">
+                                            <input type="text" value.bind="currentCustomerOrder.companyName"  validate="companyName" id="CompanyName" name="CompanyName" required class="form-control"  title="Company Name" placeholder="Company Name" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group" style="margin-bottom:2px">
+                                        <div class="col-md-8 col-md-offset-3" style="margin-bottom:2px">
+                                            <input type="text" id="Address" value.bind="currentCustomerOrder.address" validate="address" name="textAddress" required class="form-control" title="Address" placeholder="address" />
+                                        </div>
+                                        <div class="col-md-4 col-md-offset-3" style="margin-bottom:2px">
+                                            <input type="text" id="City" value.bind="currentCustomerOrder.city" validate="city" name="TextCity" required title="city" class="form-control" placeholder="City" />
+                                        </div>
+                                        <div class="col-md-4 " style="margin-bottom:2px">
+                                            <input type="text" id="Region" value.bind="currentCustomerOrder.region"  name="Region" class="form-control" title="Region" placeholder="Region" />
+                                        </div>
+                                        <div class="col-md-4 col-md-offset-3" style="margin-bottom:2px">
+                                            <input type="text" id="PostalCode" value.bind="currentCustomerOrder.postalCode" validate="postalCode" required class="form-control" name="TextPostalCode" title="Post Code" placeholder="Post Code" />
+                                        </div>
+                                        <div class="col-md-4" style="margin-bottom:2px">
+                                            <input type="text" id="Country" value.bind="currentCustomerOrder.country" validate="country" required name="TextCountry" class="form-control" title="Country" placeholder="Country" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />                           
+                                <div class="btn-group col-md-offset-3" role="group" aria-label="..." >
+                                    <button type="button" class="btn btn-primary" click.delegate="addCustomerAddress()">Same Address</button>
+                                    <button type="button" class="btn btn-primary" click.delegate="removeCustomerAddress()">Different address</button>
+                                </div>
+                                <div>
+                                    <br />
+                                </div>
+                                <div class="row">
+                                    <div class="form-group" style="margin-bottom:2px">
+                                        <label for="CompanyName" class="control-label col-md-3">Ship to:</label>
+                                        <div class="col-md-8">
+                                            <input type="text" value.bind="currentCustomerOrder.shipName" validate="shipName" id="CompanyName" name="CompanyName" required class="form-control" title="Company Name" placeholder="ship Name" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group" style="margin-bottom:2px">
+                                        <div class="col-md-8 col-md-offset-3" style="margin-bottom:2px">
+                                            <input type="text" id="Address" value.bind="currentCustomerOrder.shipAddress" validate="shipAddress" name="textAddress" required class="form-control" title="Address" placeholder="ship address" />
+                                        </div>
+                                        <div class="col-md-4 col-md-offset-3" style="margin-bottom:2px">
+                                            <input type="text" id="City" value.bind="currentCustomerOrder.shipCity" validate="shipCity" name="TextCity" required title="city" class="form-control" placeholder=" shipCity" />
+                                        </div>
+                                        <div class="col-md-4 " style="margin-bottom:2px">
+                                            <input type="text" id="Region" value.bind="currentCustomerOrder.shipRegion" name="Region" class="form-control" title="Region" placeholder="ship Region" />
+                                        </div>
+                                        <div class="col-md-4 col-md-offset-3" style="margin-bottom:2px">
+                                            <input type="text" id="PostalCode" value.bind="currentCustomerOrder.shipPostalCode" validate="shipPostalCode" required class="form-control" name="TextPostalCode" title="Post Code" placeholder="ship Post Code" />
+                                        </div>
+                                        <div class="col-md-4" style="margin-bottom:2px">
+                                            <input type="text" id="Country" value.bind="currentCustomerOrder.shipCountry" validate="shipCountry" required name="TextCountry" class="form-control" title="Country" placeholder="ship Country" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="form-group" style="margin-bottom:2px">
+                                    <label for="shippedDate" class="control-label col-md-3">Ship Date:</label>
+                                    <div class="col-md-8">
+                                        <input type="text" value.bind="currentCustomerOrder.shippedDate | dateFormat"   title="shipped Date" class="form-control" title="require Date"  />
+                                    </div>
+                                </div>
+                                <!--<div class="form-group" style="margin-bottom:2px">
+                                    <label for="requiredDate" class="control-label col-md-3">required Date</label>
+                                    <div class="col-md-8">
+                                        <input type="text"  value.bind="currentCustomerOrder.requiredDate"  id="requiredDate"  name="requiredDate" class="form-control" title="required Date" />
+                                        <date-picker value.bind="currentCustomerOrder.requiredDat" ></date-picker >
+                                    </div>
+                                </div>-->
+                                <div class="form-group" style="margin-bottom:2px">
+                                    <label for="requiredDate" class="control-label col-md-3">required Date</label>
+                                    <div class="col-md-8">
+                                       <div class="input-group">
+                                             <input type="text"  value.bind="currentCustomerOrder.requiredDate | dateFormat"  id="requiredDate"  name="requiredDate" class="form-control" title="required Date" />
+                                            <span class="input-group-btn">
+                                                    <button class="btn btn-default" type="button" click.delegate="detePickerShow()"> <i class="fa fa-calendar" aria-hidden="true"></i></button>
+                                             </span>
+                                         </div>
+                                    </div>
+                                </div>
+                                 <div class="form-group">
+                                    <label for="CategoryID" class="control-label col-md-3">Shippers</label>
+                                    <div class="col-md-6">
+                                        <select id="selectedShipper" class="form-control" value.bind="currentCustomerOrder.shipVia">
+                                            <option repeat.for="shp of shippers" model.bind="shp.shipperID">${shp.companyName}</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+                                <hr />
+                                <div class="form-group">
+                                    <div class="col-md-8 col-md-offset-3">
+                                        <button type="button" class="btn btn-primary btn-lg" disabled.bind="!currentCustomerOrder.validation.result.isValid" click.delegate="saveCustomerOrder()">Save Order</button>
+
+                                        <button type="button" class="btn btn-primary btn-lg" style="margin-left:95px" click.delegate="cancelOrder()">Cancel</button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-8 col-md-offset-3">
+                                       <h3>${datesRequired}</h3>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="productToOrderModal" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Confirm New Product</h3>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" data-toggle="validator" id="formNewProduct" role="form" submit.trigger="saveNewProduct()">
+                        <div>
+                            <div>
+                                <div class="form-group">
+                                    <!--<label for="ProductName" class="control-label col-md-3">Product Name</label>-->
+                                    <div class="col-md-3">
+                                        <h3 align="right"> <span class="label label-primary">Product Name</span></h3>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h3><span class="label label-primary">${productToOrderItem.productName}</span></h3>
+
+                                        <!--<input type="text" value.bind="productToOrderItem.productName" id="ProductName" readonly name="ProductName" class="form-control" title="ProductName" placeholder="ProductName" />-->
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <!--<label for="UnitPrice" class="control-label col-md-3">Unit Price</label>-->
+                                    <div class="col-md-3">
+                                        <h3 align="right"> <span class="label label-primary">Unit Price</span></h3>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h3><span class="label label-primary">${productToOrderItem.unitPrice | currencyFormat:'£'}</span></h3>
+
+                                        <!--<input type="number" value.bind="productToOrderItem.unitPrice" id="UnitPrice" readonly name="UnitPrice" class="form-control" title="UnitPrice" placeholder="UnitPrice" />-->
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Quantity" class="control-label col-md-3">Qty</label>
+                                    <div class="col-md-6">
+                                        <input type="number" value.bind="productToOrderItem.qty" id="QuantityId" keyup.delegate="QtyChangeKeyUp($event)" name="QuantityPerUnit" class="form-control" title="QuantityPerUnit" autofocus placeholder="QuantityPerUnit" />
+                                    </div>
+                                </div>
+                               
+                                <div class="form-group">
+                                    <label for="discount" class="control-label col-md-3">discount</label>
+                                    <div class="col-md-6">
+                                        <input type="number" value.bind="productToOrderItem.discount" keyup.delegate="QtyChangeKeyUp($event)" id="discount" name="discount" class="form-control" title="UnitsInStock" placeholder="discount" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <!--<label for="UnitsOnOrder" class="control-label col-md-3">total</label>-->
+                                    <div class="col-md-3">
+                                        <h3 align="right"> <span class="label label-primary">Total</span></h3>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h3><span class="label label-primary">${productToOrderItem.total | currencyFormat:'£'}</span></h3>
+                                        <!--<input type="text" value.bind="productToOrderItem.total" id="UnitsOnOrder" readonly name="UnitsOnOrder" class="form-control" title="UnitsOnOrder" placeholder="UnitsOnOrder" />-->
+                                    </div>
+                                </div>
+                              
+
+                            </div>
+                            <br />
+                            <div class="form-group">
+
+                                <div class="form-group">
+                                    <div class="col-md-6 col-md-offset-4">
+                                        <button click.delegate="insertProductIntoOrderDetails()"  class="btn btn-primary btn-lg" >Add Product</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="confirmDeleteOrderDetailsModal" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Confirm Delete Order Details </h3>
+                </div>
+                <div class="modal-body">
+                    <span>Product To Delete</span> <span><strong>${deleteOrderItem.productName}</strong></span>
+                    <p><strong>Deleting this item cannon be undone.  Are you sure?</strong></p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" data-dismiss="modal">Close</button>
+                    <button class="btn btn-danger" click.delegate="deleteOrderDetails()">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

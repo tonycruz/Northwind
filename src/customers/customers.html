@@ -1,0 +1,60 @@
+﻿<template>
+    <!--<require from='../modules/pager-source.html'></require>-->
+    <section>
+        <div class="panel panel-default">
+           
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <br />
+                        <div class="input-group">
+                            <input type="text" value.bind="datasource.searchCriteria" keyup.delegate="onKeyUp($event)"
+                                   class="form-control" placeholder="Customers Company or Contry">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-success" tabindex="-1"
+                                        click.trigger="searchAll()">
+                                    Search
+                                </button>
+                                <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" tabindex="-1">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu pull-right"></ul>
+                            </div><!-- /btn-group -->
+
+                        </div><!-- /input-group -->
+                    </div><!-- /.col-lg-6 -->
+                    <div class="col-md-6">
+
+                    </div>
+                </div>
+                <hr />
+                <table class="table table-condensed table-responsive">
+                    <thead>
+                        <tr>
+                            <td>Account</td>
+                            <td>Company Name</td>
+                            <td>Contact Name</td>
+                            <td>Country</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr repeat.for="customer of  datasource.displaySource">
+                            <td><a route-href="route: customerEdit; params.bind: {id:customer.customerID}">${customer.customerID}</a></td>
+                            <td>${customer.companyName}</td>
+                            <td>${customer.contactName}</td>
+                            <td>${customer.contactName}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr />
+                <data-source source.bind="datasource"></data-source>
+                <hr />
+                <pager-source source.bind="datasource"></pager-source>
+                <div>
+                  <a route-href="route: codeView; params.bind: {id:'customersCode'}" class="btn btn-primary pull-right">Code Details <i class="fa fa-code" aria-hidden="true"></i> </a>
+               </div>
+            </div>
+        </div>
+     </section>
+</template>

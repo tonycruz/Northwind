@@ -1,0 +1,279 @@
+﻿<template>
+    <section>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <h5> List suppliers</h5>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="input-group">
+                        <input type="text" value.bind="datasource.searchCriteria" keyup.delegate="onKeyUp($event)"
+                               class="form-control" placeholder="Company Name,country or contact Name">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-success" tabindex="-1"
+                                    click.trigger="searchAll()">
+                                Search
+                            </button>
+                            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" tabindex="-1">
+                                <span class="caret"></span>
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu pull-right"></ul>
+                        </div><!-- /btn-group -->
+
+                    </div><!-- /input-group -->
+                    <br />
+                    <table class="table table-condensed table-responsive">
+                        <thead>
+                            <tr>
+                                <td>suppliers</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr repeat.for="sup of  datasource.displaySource">
+                                <td><a href="#" click.delegate="$parent.itemChange(sup)">${sup.companyName}</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!--<compose view-model="../modules/data-source" click.delegate="itemChange(datasource.currentRecord)" model.bind="datasource"></compose>-->
+                    <data-source source.bind="datasource" click.delegate="itemChange(datasource.currentRecord)"></data-source>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <section>
+
+                        <ul class="nav nav-tabs" id="supplierAndProductTab">
+                            <li><a href="#supplierAppTab" data-toggle="tab">Suppliers</a></li>
+                            <li><a href="#productsAppTab" data-toggle="tab">Products</a></li>
+                        </ul>
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="supplierAppTab">
+                                <div>
+                                    <br />
+                                    <form class="form-horizontal" validate.bind="currentSupplier.validation" role="form">
+                                            <div class="form-group">
+                                                <label for="supplierID" class="control-label col-md-3">Supplier ID</label>
+                                                <div class="col-md-6">
+                                                    <input type="text" value.bind="currentSupplier.supplierID" readonly id="SupplierID" name="SupplierID" class="form-control" title="SupplierID" placeholder="SupplierID" />
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="CompanyName" class="control-label col-md-3">Company Name</label>
+                                                <div class="col-md-6">
+                                                    <input type="text" value.bind="currentSupplier.companyName" validate="companyName" id="CompanyName" name="CompanyName" class="form-control" title="CompanyName" placeholder="CompanyName" />
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="ContactName" class="control-label col-md-3">Contact Name</label>
+                                                <div class="col-md-6">
+                                                    <input type="text" value.bind="currentSupplier.contactName" validate="contactName" id="ContactName" name="ContactName" class="form-control" title="ContactName" placeholder="ContactName" />
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="ContactTitle" class="control-label col-md-3">Contact Title</label>
+                                                <div class="col-md-6">
+                                                    <input type="text"  value.bind="currentSupplier.contactTitle" validate="contactTitle" id="ContactTitle" name="ContactTitle" class="form-control" title="ContactTitle" placeholder="ContactTitle" />
+                                                   
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="Address" class="control-label col-md-3">Address</label>
+                                                <div class="col-md-6">
+                                                    <input type="text" value.bind="currentSupplier.address" validate="address" id="Address" name="Address" class="form-control" title="Address" placeholder="Address" /><br />
+                                                    
+                                                </div>
+                                                <div class="col-md-3 col-md-offset-3">
+                                                    <input type="text" value.bind="currentSupplier.city" validate="city" id="City" name="City" class="form-control" title="City" placeholder="City" />
+                                                    
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <input type="text" value.bind="currentSupplier.region"  id="Region" name="Region" class="form-control" title="Region" placeholder="Region" /><br />
+                                                </div>
+                                                <div class="col-md-3 col-md-offset-3">
+                                                    <input type="text" value.bind="currentSupplier.postalCode" validate="postalCode" id="PostalCode" name="PostalCode" class="form-control" title="PostalCode" placeholder="PostalCode" />
+                                                    
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <input type="text" value.bind="currentSupplier.country" validate="country" id="Country" name="Country" class="form-control" title="Country" placeholder="Country" />
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="Phone" class="control-label col-md-3">Phone</label>
+                                                <div class="col-md-6">
+                                                    <input type="text" value.bind="currentSupplier.phone" validate="phone" id="Phone" name="Phone" class="form-control" title="Phone" placeholder="Phone" />
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="Fax" class="control-label col-md-3">Fax</label>
+                                                <div class="col-md-6">
+                                                    <input type="text" value.bind="currentSupplier.fax" id="Fax" name="Fax" class="form-control" title="Fax" placeholder="Fax" />
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="HomePage" class="control-label col-md-3">Home Page</label>
+                                                <div class="col-md-6">
+                                                    <input type="text" value.bind="currentSupplier.homePage" id="HomePage" name="HomePage" class="form-control" title="HomePage" placeholder="HomePage" />
+                                                    
+                                                </div>
+                                            </div>
+                                        <div class="col-md-6 col-md-offset-3">
+                                            <a class="btn btn-primary" click.trigger="showAddNewModal()"><span class="fa fa-plus"> </span> Add New</a>
+                                            <a class="btn btn-primary" style="margin-left:15px" disabled.bind="!currentSupplier.validation.result.isValid" click.trigger="saveSupplier()"><span class="glyphicon glyphicon-floppy-save"> </span> Save</a>
+                                            <a class="btn btn-danger" style="margin-left:15px" click.trigger="showDeleteModal()"><span class="fa fa-trash-o"> </span> Delete</a>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="productsAppTab">
+                                <div class="col-md-12">
+                                    <br />
+                                    <div class="panel panel-success">
+                                        <div class="panel-heading">Products </div>
+                                        <table class="table table-condensed">
+                                            <thead>
+                                                <tr>
+                                                    <th>Product Name</th>
+                                                    <th>Price</th>
+                                                    <th>In Stock</th>
+                                                    <th> On Order</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr repeat.for="prod of  dataSourceProducts.displaySource">
+                                                    <td>${prod.productName}</td>
+                                                    <td>${prod.unitPrice | currencyFormat:'£'} </td>
+                                                    <td>${prod.unitsInStock}</td>
+                                                    <td>${prod.unitsOnOrder}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <p></p>
+                                        <!--<compose view-model="../modules/data-source" model.bind="dataSourceProducts"></compose>-->
+                                        <data-source source.bind="dataSourceProducts" click.delegate="itemChange(datasource.currentRecord)"></data-source>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                       <div>
+                         <a route-href="route: codeView; params.bind: {id:'suppliersCode'}" class="btn btn-primary pull-right">Code Details <i class="fa fa-code" aria-hidden="true"></i> </a>
+                       </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <div id="confirmModal" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Confirm Delete</h3>
+                </div>
+                <div class="modal-body">
+                    <span><strong> To Delete</strong></span> <span><strong>${currentSupplier.companyName}</strong></span>
+                    <p> <strong>this Record cannon be undone.  Are you sure?</strong> </p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" data-dismiss="modal">Close</button>
+                    <button class="btn btn-danger" click.delegate="deleteSuppliers()">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="newSupplierModal" class="modal fade">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Confirm New Supplier</h3>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" validate.bind="newSupplier.validation" role="form" submit.trigger="saveNewSupplier()">
+                        <div>
+                            <div class="form-group">
+                                <label for="companyName" class="control-label col-md-3">Company Name</label>
+                                <div class="col-md-6">
+                                    <input type="text" value.bind="newSupplier.companyName" validate="companyName" required name="CompanyName" class="form-control" title="CompanyName" placeholder="CompanyName" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="ContactName" class="control-label col-md-3">Contact Name</label>
+                                <div class="col-md-6">
+                                    <input type="text" value.bind="newSupplier.contactName" validate="contactName" required name="ContactName" class="form-control" title="ContactName" placeholder="ContactName" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="ContactTitle" class="control-label col-md-3">Contact Title</label>
+                                <div class="col-md-6">
+                                    <input type="text" value.bind="newSupplier.contactTitle" validate="contactTitle" required name="ContactTitle" class="form-control" title="ContactTitle" placeholder="ContactTitle" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="Address" class="control-label col-md-3">Address</label>
+                                <div class="col-md-6">
+                                    <input type="text" value.bind="newSupplier.address" validate="address" id="Address" name="Address" class="form-control" title="Address" placeholder="Address" /><br />
+
+                                </div>
+                                <div class="col-md-3 col-md-offset-3">
+                                    <input type="text" value.bind="newSupplier.city" validate="city" id="City" name="City" class="form-control" title="City" placeholder="City" />
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" value.bind="newSupplier.region" id="Region" name="Region" class="form-control" title="Region" placeholder="Region" /><br />
+                                </div>
+                                <div class="col-md-3 col-md-offset-3">
+                                    <input type="text" value.bind="newSupplier.postalCode" validate="postalCode" id="PostalCode" name="PostalCode" class="form-control" title="PostalCode" placeholder="PostalCode" />
+
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" value.bind="newSupplier.country" validate="country" id="Country" name="Country" class="form-control" title="Country" placeholder="Country" />
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="Phone" class="control-label col-md-3">Phone</label>
+                                <div class="col-md-6">
+                                    <input type="text" value.bind="newSupplier.phone" required validate="phone" id="Phone" name="Phone" class="form-control" title="Phone" placeholder="Phone" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="Fax" class="control-label col-md-3">Fax</label>
+                                <div class="col-md-6">
+                                    <input type="text" value.bind="newSupplier.fax" id="Fax" name="Fax" class="form-control" title="Fax" placeholder="Fax" />
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="HomePage" class="control-label col-md-3">Home Page</label>
+                                <div class="col-md-6">
+                                    <input type="text" value.bind="newSupplier.homePage" id="HomePage" name="HomePage" class="form-control" title="HomePage" placeholder="HomePage" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-6 col-md-offset-3">
+                                    <input type="submit" disabled.bind="!newSupplier.validation.result.isValid" value="Save New Supplier" class="btn btn-primary btn-lg">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

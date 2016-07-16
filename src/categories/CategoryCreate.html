@@ -1,0 +1,47 @@
+﻿<template>
+    <section>
+        <div>
+            <br />
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <h3> Add Category ${category.categoryName}</h3>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <form class="form-horizontal" validate.bind="category.validation" submit.trigger="save()" role="form">
+                        <div>
+                            <div class="form-group">
+                                <label for="CategoryName" class="control-label col-md-3">Category Name</label>
+                                <div class="col-md-6">
+                                    <input type="text" value.bind="category.categoryName" id="CategoryName" validate="categoryName" class="form-control" title="CategoryName" placeholder="CategoryName" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="Description" class="control-label col-md-3">Description</label>
+                                <div class="col-md-6">
+                                    <input type="text" value.bind="category.description" id="Description" name="Description" validate="description" class="form-control" title="Description" placeholder="Description" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-6 col-md-offset-2">
+                                <a route-href="route:categories;" class="btn btn-default"><span class="glyphicon glyphicon-hand-left"> </span>  Go back</a>
+                                <input type="submit" disabled.bind="!category.validation.result.isValid" value="Save" class="btn btn-primary">
+                            </div>
+                        </div>
+                    </form>
+                   <hr>
+                   <div>
+                    <a route-href="route: codeView; params.bind: {id:'categoryCreate'}" class="btn btn-primary pull-right">Code Details <i class="fa fa-code" aria-hidden="true"></i> </a>
+                   </div>
+                </div>
+                
+            </div>
+        </div>
+        
+
+    </section>
+
+</template>
+

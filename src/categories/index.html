@@ -1,0 +1,15 @@
+<template>
+    <div class="au-animate">
+        <section class="alert alert-success">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <a id="CategoriesAddNewid" route-href="route:categoryCreate" data-content="Add New category" class="indexMenuOver" style="margin-right:50px"> <i class="fa fa-plus fa-4x"></i></a>
+                    <a id="CategoriesManagerid" route-href="route:categories" data-content="categories Manager" class="indexMenuOver" style="margin-right:50px"> <i class="fa fa-sitemap fa-5x color-orange"></i></a>
+                    <a id="CategoriesMasterDetailsid" route-href="route:categoryMaster" data-content="category Master" class="indexMenuOver" style="margin-right:50px"> <i class="fa fa-windows fa-4x" style="color:green"></i></a>
+                    <a id="categoryProducts" route-href="route:categoryProducts" data-content="category Products" class="indexMenuOver" style="margin-right:50px"> <i class="fa fa-windows fa-4x" style="color:purple"></i></a>
+                </div>
+            </div>
+        </section>
+        <router-view></router-view>
+    </div>
+</template>

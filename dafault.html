@@ -1,0 +1,40 @@
+<html>
+<head>
+<script>
+function printPage(id)
+{
+   var html="<html>";
+   html+= document.getElementById(id).innerHTML;
+
+   html+="</html>";
+
+   var printWin = window.open('','','left=0,top=0,width=1,height=1,toolbar=0,scrollbars=0,status  =0');
+   printWin.document.write(html);
+   printWin.document.close();
+   printWin.focus();
+   printWin.print();
+   printWin.close();
+}
+</script>
+</head>
+<body>
+<div id="block1">
+<table border="1" >
+</tr>
+<th colspan="3">Block 1</th>
+</tr>
+<tr>
+<th>1</th><th>XYZ</th><th>athock</th>
+</tr>
+</table>
+
+</div>
+
+<div id="block2">
+    This is Block 2 content
+</div>
+
+<input type="button" value="Print Block 1" onclick="printPage('block1');"></input>
+<input type="button" value="Print Block 2" onclick="printPage('block2');"></input>
+</body>
+</html>

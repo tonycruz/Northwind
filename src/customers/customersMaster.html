@@ -1,0 +1,293 @@
+﻿<template>
+    <!--<require from='../modules/data-source.html'></require>-->
+    <section>
+        
+        <div class="col-md-4 col-sm-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <h5> List Customers</h5>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="input-group">
+                        <input type="text" value.bind="datasource.searchCriteria" keyup.delegate="onKeyUp($event)"
+                               class="form-control" placeholder="Customers Company or Contry">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-success" tabindex="-1"
+                                    click.trigger="searchAll()">
+                                Search
+                            </button>
+                            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" tabindex="-1">
+                                <span class="caret"></span>
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu pull-right"></ul>
+                        </div><!-- /btn-group -->
+
+                    </div><!-- /input-group -->
+                    <br />
+                    <table class="table table-condensed table-responsive">
+                        <thead>
+                            <tr>
+                                <td>Account</td>
+                                <td>Company Name</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr repeat.for="customer of  datasource.displaySource">
+                                <td><a href="#" click.delegate="$parent.itemChange(customer)">${customer.customerID}</a></td>
+                                <td>${customer.companyName}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <data-source source.bind="datasource" click.delegate="itemChange(datasource.currentRecord)"></data-source>
+                    <hr />
+                </div>
+            </div>
+        </div>
+        <!-- Customer Search by acount company country end here-->
+
+        <!-- Customer Details   start here-->
+        <div class="col-md-8 col-sm-8" >
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <h5>Customers</h5>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <form class="form-horizontal" validate.bind="currentCustomer.validation" submit.trigger="saveCustomer()" role="form">
+                        <div>
+                            <div class="form-group">
+                                <label for="CustomerID" class="control-label col-md-3 col-sm-3">Customer ID</label>
+                                <div class="col-md-6">
+                                    <input type="text" value.bind="currentCustomer.customerID" readonly validate="customerID" class="form-control" title="Customer ID" placeholder="Customer id" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="CompanyName" class="control-label col-md-3 col-sm-3">Company Name</label>
+                                <div class="col-md-6">
+                                    <input type="text" value.bind="currentCustomer.companyName" validate="companyName" class="form-control" title="Company Name" placeholder="Company Name" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="TextContactName" class="control-label col-md-3 col-sm-3">Contact Name</label>
+                                <div class="col-md-6">
+                                    <input type="text" value.bind="currentCustomer.contactName" validate="contactName" class="form-control" title="Contact Name" placeholder="Contact Name" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="TextContactTitle" class="control-label col-md-3 col-sm-3">Contact title</label>
+                                <div class="col-md-6">
+                                    <input type="text" value.bind="currentCustomer.contactTitle" validate="contactTitle"  class="form-control" title="Contact Title" placeholder="Contact Title" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="textAddress" class="control-label col-md-3 col-sm-3">Address</label>
+                                <div class="col-md-6">
+                                    <input type="text" id="Address" value.bind="currentCustomer.address" validate="address" class="form-control" title="Address" placeholder="address" /><br />
+                                </div>
+                                <div class="col-md-3 col-md-offset-3 col-sm-3">
+                                    <input type="text" id="City" value.bind="currentCustomer.city" validate="city" title="city" class="form-control" placeholder="City" /><br />
+                                </div>
+                                <div class="col-md-3 col-sm-3">
+                                    <input type="text" id="Region" value.bind="currentCustomer.region" name="Region" class="form-control" title="Region" placeholder="Region" /><br />
+                                </div>
+                                <div class="col-md-3 col-sm-3 col-md-offset-3">
+                                    <input type="text" id="PostalCode" value.bind="currentCustomer.postalCode" validate="postalCode" class="form-control" name="TextPostalCode" title="Post Code" placeholder="Post Code" /><br />
+                                </div>
+                                <div class="col-md-3 col-sm-3">
+                                    <input type="text" id="Country" value.bind="currentCustomer.country" validate="country" class="form-control" title="Country" placeholder="Country" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="TextPhone" class="control-label col-md-3 col-sm-3">Contacts</label>
+                                <div class="col-md-6">
+                                    <input type="text" id="Phone" value.bind="currentCustomer.phone" validate="phone" class="form-control" name="TextPhone" title="phone No" placeholder="Phone No" /><br />
+                                </div>
+                                <div class="col-md-6 col-md-offset-3">
+                                    <input type="text" id="Fax" value.bind="currentCustomer.fax"  class="form-control" title="Fax No" placeholder="Fax No" /><br />
+                                </div>
+                                <br />
+
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-6 col-md-offset-3">
+                                    <a class="btn btn-primary" click.trigger="showAddNewCustomerAccount()"><span class="fa fa-plus"> </span> Add New</a>
+                                    <input type="submit" value="Save Customer" disabled.bind="!currentCustomer.validation.result.isValid" style="margin-left:20px" class="btn btn-primary">
+
+                                    <!--<a class="btn btn-primary" style="margin-left:15px" click.trigger="saveCustomer()" disabled.bind="!currentCustomer.validation.result.isValid"><span class="glyphicon glyphicon-floppy-save"> </span> Save</a>-->
+                                    <a class="btn btn-danger" style="margin-left:15px"  click.trigger="showConfirmDelete()"><span class="fa fa-trash-o"> </span> Delete</a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
+                   <div>
+                     <a route-href="route: codeView; params.bind: {id:'customersMaster'}" class="btn btn-primary pull-right">Code Details <i class="fa fa-code" aria-hidden="true"></i> </a>
+                  </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- Customer Details   end here-->
+    </section>
+    <!--Delete Customer start here-->
+    <div id="confirmModalDeleteCustomer" class="modal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Confirm Delete</h3>
+                </div>
+                <div class="modal-body">
+                    <h4>Customer To Delete</h4>
+                    <h3>${currentCustomer.companyName}</h3>
+                    <h5>Deleting this Customer cannon be undone.  Are you sure?</h5>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" data-dismiss="modal">Close</button>
+                    <button class="btn btn-danger" click.trigger="delteCustomer()">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Delete Customer end here-->
+
+    <!--Add New Customer start here-->
+    <div id="NewCustomerModal" class="modal fade">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Confirm New Customer</h3>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" validate.bind="newCustomer.validation" id="formNewCustomer" role="form" submit.trigger="saveNewCustomer()">
+                        <div>
+                            <div class="form-group">
+                                <label for="CustomerID" class="control-label col-md-3">Customer ID</label>
+                                <div class="col-md-6">
+                                    <input type="text" value.bind="newCustomer.customerID" validate="customerID" class="form-control" title="Customer ID" placeholder="Customer id" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="CompanyName" class="control-label col-md-3">Company Name</label>
+                                <div class="col-md-6">
+                                    <input type="text" value.bind="newCustomer.companyName" validate="companyName" class="form-control" title="Company Name" placeholder="Company Name" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="TextContactName" class="control-label col-md-3">Contact Name</label>
+                                <div class="col-md-6">
+                                    <input type="text" value.bind="newCustomer.contactName" validate="contactName" class="form-control" title="Contact Name" placeholder="Contact Name" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="TextContactTitle" class="control-label col-md-3">Contact title</label>
+                                <div class="col-md-6">
+                                    <input type="text" value.bind="newCustomer.contactTitle" validate="contactTitle" class="form-control" title="Contact Title" placeholder="Contact Title" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="textAddress" class="control-label col-md-3">Address</label>
+                                <div class="col-md-6">
+                                    <input type="text" id="Address" value.bind="newCustomer.address" validate="address" class="form-control" title="Address" placeholder="address" /><br />
+                                </div>
+                                <div class="col-md-3 col-md-offset-3">
+                                    <input type="text" id="City" value.bind="newCustomer.city" validate="city" title="city" class="form-control" placeholder="City" /><br />
+                                </div>
+                                <div class="col-md-3 ">
+                                    <input type="text" id="Region" value.bind="newCustomer.region" name="Region" class="form-control" title="Region" placeholder="Region" /><br />
+                                </div>
+                                <div class="col-md-3 col-md-offset-3">
+                                    <input type="text" id="PostalCode" value.bind="newCustomer.postalCode" validate="postalCode" class="form-control" name="TextPostalCode" title="Post Code" placeholder="Post Code" /><br />
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" id="Country" value.bind="newCustomer.country" validate="country" class="form-control" title="Country" placeholder="Country" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="TextPhone" class="control-label col-md-3">Contacts</label>
+                                <div class="col-md-6">
+                                    <input type="text" id="Phone" value.bind="newCustomer.phone" validate="phone" class="form-control" name="TextPhone" title="phone No" placeholder="Phone No" /><br />
+                                </div>
+                                <div class="col-md-6 col-md-offset-3">
+                                    <input type="text" id="Fax" value.bind="newCustomer.fax" class="form-control" title="Fax No" placeholder="Fax No" /><br />
+                                </div>
+                                <br />
+
+                            </div>
+                            <hr />
+                            <div class="form-group">
+                                <div class="col-md-6 col-md-offset-3">
+                                    <input type="submit" value="Save New Customer" disabled.bind="!newCustomer.validation.result.isValid" class="btn btn-primary btn-lg">
+                                </div>
+                            </div>
+                         
+                        </div>
+                    </form>
+                   
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Add New Customer end here-->
+
+    <!--Search Customer if account  start here-->
+    <div id="modalSearchNewCustomer" class="modal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Search New Customer Account</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <input type="text" value.bind="datasource.searchCriteria" autofocus keyup.delegate="onKeyUp($event)"
+                               class="form-control" placeholder="customer Account">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-success" tabindex="-1"
+                                    click.trigger="searchAll()">
+                                Search
+                            </button>
+                            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" tabindex="-1">
+                                <span class="caret"></span>
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu pull-right"></ul>
+                        </div><!-- /btn-group -->
+
+                    </div><!-- /input-group -->
+                    <br />
+                    <table class="table table-condensed table-responsive">
+                        <thead>
+                            <tr>
+                                <td>Account</td>
+                                <td>Company Name</td>
+                           </tr>
+                        </thead>
+                        <tbody>
+                            <tr repeat.for="customer of  datasource.displaySource">
+                                <td><a href="#" click.delegate="$parent.itemChange(customer)">${customer.customerID}</a></td>
+                                <td>${customer.companyName}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!--<compose view-model="../modules/data-source" model.bind="datasource"></compose>-->
+                    <data-source source.bind="datasource" click.delegate="itemChange(datasource.currentRecord)"></data-source>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" click.trigger="closeAddNewCustomerAccount()" >Close</button>
+                    <button class="btn btn-primary" click.trigger="showAddNewCustomer()">Add Account</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Search Customer if account  end here-->
+</template>

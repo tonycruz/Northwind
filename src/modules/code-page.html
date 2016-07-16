@@ -1,0 +1,31 @@
+<template bindable="codelist">
+    <div class="panel-group" id="${codelist.accordionName}">
+        <!--View -->
+        <div class="panel panel-info" repeat.for="cod of codelist">
+            <div class="panel-heading">
+                 <div class="row">
+                      <div class="col-md-7">
+                           <h4 class="panel-title">
+                              <a data-toggle="collapse" data-parent="#${cod.accordionName}" href="${cod.href}">
+                              ${cod.title}
+                              </a>
+                           </h4>
+                      </div>
+                      <div class="col-md-5">
+                           <button class="codeview btn btn-default btn-xs pull-right" data-clipboard-action="copy" data-clipboard-target="#${cod.copyid}" title="Copy Code"><i class="fa fa-clone fa-lg"></i></button>
+                       </div>
+                 </div>
+            </div>
+            <div id="${cod.hrefName}" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <div class="bs-callout bs-callout-info">
+                        <h4>${cod.fileLocation}</h4>
+                    </div>
+                    <pre class="pre-scrollable">
+<code class="${cod.group}" innerhtml.bind="cod.fileContent" id="${cod.copyid}"></code>
+                   </pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

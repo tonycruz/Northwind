@@ -1,0 +1,153 @@
+﻿<template>
+    <!--<require from='../modules/data-source.html'></require>-->
+    <section>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <h5> shippers</h5>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="input-group">
+                        <input type="text" value.bind="datasource.searchCriteria" keyup.delegate="onKeyUp($event)"
+                               class="form-control" placeholder="Shipper Name">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-success" tabindex="-1"
+                                    click.trigger="searchAll()">
+                                Search
+                            </button>
+                            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" tabindex="-1">
+                                <span class="caret"></span>
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu pull-right"></ul>
+                        </div><!-- /btn-group -->
+
+                    </div><!-- /input-group -->
+                    <br />
+                    <table class="table table-condensed table-responsive">
+                        <thead>
+                            <tr>
+                                <td>Shipper Name</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr repeat.for="shipper of  datasource.displaySource">
+                                <td><a href="#" click.delegate="$parent.itemChange(shipper)">${shipper.companyName}</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                      <data-source source.bind="datasource" click.delegate="itemChange(datasource.currentRecord)"></data-source>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <h5>Shipper Details</h5>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <form class="form-horizontal" validate.bind="currentShippers.validation" id="formShipper" role="form">
+                        <div>
+                            <div data-bind="with: ShipperModel.currentRecord">
+                                <div class="form-group">
+                                    <label for="ShipperID" class="control-label col-md-3">Shipper ID</label>
+                                    <div class="col-md-6">
+                                        <input type="text" value.bind="currentShippers.shipperID" readonly id="ShipperID" name="ShipperID" class="form-control" title="ShipperID" placeholder="ShipperID" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="ShipperName" class="control-label col-md-3">Company Name</label>
+                                    <div class="col-md-6">
+                                        <input type="text" value.bind="currentShippers.companyName" validate="companyName" id="ShipperName" name="ShipperName" class="form-control" title="ShipperName" placeholder="ShipperName" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone" class="control-label col-md-3">Phone</label>
+                                    <div class="col-md-6">
+                                        <input type="text" value.bind="currentShippers.phone" id="phoneid" validate="phone" name="phone" class="form-control" title="QuantityPerUnit" placeholder="QuantityPerUnit" />
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <br />
+                            <div class="form-group">
+
+                                <div class="col-md-6 col-md-offset-3">
+                                    <a class="btn btn-primary" click.trigger="showAddNewModal()"><span class="fa fa-plus"> </span> Add New</a>
+                                    <a class="btn btn-primary" style="margin-left:15px" disabled.bind="!currentShippers.validation.result.isValid" click.trigger="saveShipper()"><span class="glyphicon glyphicon-floppy-save"> </span> Save</a>
+                                    <a class="btn btn-danger" style="margin-left:15px" click.trigger="showDeleteModal()"><span class="fa fa-trash-o"> </span> Delete</a>
+                                </div>
+                            </div>
+                           <div>
+                              <a route-href="route: codeView; params.bind: {id:'shipperCode'}" class="btn btn-primary pull-right">Code Details <i class="fa fa-code" aria-hidden="true"></i> </a>
+                         </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div id="newShipplingModal" class="modal fade">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Confirm New Shipper</h3>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" validate.bind="newShipper.validation" id="formNewShipper" role="form" submit.trigger="saveNewShipper()">
+                        <div>
+                            <div>
+                                <div class="form-group">
+                                    <label for="companyName" class="control-label col-md-3">company Name</label>
+                                    <div class="col-md-9">
+                                        <input type="text" value.bind="newShipper.companyName" validate="companyName" id="companyName" required name="companyName" class="form-control" data-minlength="5" maxlength="25" title="company Name" placeholder="company Name" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone" class="control-label col-md-3">phone</label>
+                                    <div class="col-md-9">
+                                        <input type="text" value.bind="newShipper.phone" validate="phone" id="phone" name="phone" class="form-control" title="phone" data-minlength="10" placeholder="phone" />
+                                    </div>
+                                </div>
+                                <hr />
+                                <div class="form-group">
+                                    <div class="col-md-6 col-md-offset-3">
+                                        <input type="submit" disabled.bind="!newShipper.validation.result.isValid" value="Save New Shipper" class="btn btn-primary btn-lg">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                  
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--confirm Delete Product Modal starts here -->
+    <div id="confirmDeleteShipperModal" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Confirm Delete</h3>
+                </div>
+                <div class="modal-body">
+                    <span>Shipper To Delete</span> <span>${currentShippers.companyName}</span>
+                    <p>Deleting this item cannon be undone.  Are you sure?</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" data-dismiss="modal">Close</button>
+                    <button class="btn btn-danger" click.delegate="deleteProduct()">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--confirm Delete Product Modal ends here -->
+</template>

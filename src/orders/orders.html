@@ -1,0 +1,173 @@
+﻿<template>
+   <section>
+            <div class="col-sm-4 hidden-print">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <h5> Customer Orders</h5>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="input-group">
+                            <input type="text" value.bind="datasource.searchCriteria" keyup.delegate="onKeyUp($event)"
+                                   class="form-control" placeholder="Order No, Customer Acc, country">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-success" tabindex="-1"
+                                        click.trigger="searchAll()">
+                                    Search
+                                </button>
+                                <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" tabindex="-1">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu pull-right"></ul>
+                            </div><!-- /btn-group -->
+
+                        </div><!-- /input-group -->
+                        <br />
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <td>Order</td>
+                                    <td class="">Company Name</td>
+                                    <td></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr repeat.for="order of  datasource.displaySource">
+                                    <td><a href="#" click.delegate="$parent.itemChange(order)">${order.orderID}</a></td>
+                                    <td>${order.companyName}</td>
+                                    <td><a route-href="route: EditOrder; params.bind: {id:order.orderID}"><i class="fa fa-shopping-cart fa-lg"></i> </a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!--<compose view-model="../modules/data-source" click.delegate="itemChange(datasource.currentRecord)" model.bind="datasource"></compose>-->
+                        <data-source source.bind="datasource" click.delegate="itemChange(datasource.currentRecord)"></data-source>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <h5>Order Details</h5>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12" data-bind="with: ordersModel.currentRecord">
+                                <div class="col-md-6 col-sm-6">
+                                    <div class="panel panel-success">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">Bill To:</h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            <span>${datasource.currentRecord.companyName}</span> <br />
+                                            <span>${datasource.currentRecord.address}</span><br />
+                                            <span>${datasource.currentRecord.city}</span><br />
+                                            <span>${datasource.currentRecord.postalCode}</span><br />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-6">
+                                    <div class="panel panel-success">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">Ship To:</h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            <span>${datasource.currentRecord.shipName}</span> <br />
+                                            <span>${datasource.currentRecord.shipAddress}</span><br />
+                                            <span>${datasource.currentRecord.shipCity}</span><br />
+                                            <span>${datasource.currentRecord.shipPostalCode}</span><br />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12" data-bind="with: ordersModel.currentRecord">
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="panel panel-success">
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-md-3 col-sm-3">
+                                                    <span>Acc:</span> <span>${datasource.currentRecord.customerID}</span>
+                                                </div>
+                                                <div class="col-md-3 col-sm-3">
+                                                    <span>Date:</span> <span >${datasource.currentRecord.orderDate | dateFormat}</span>
+                                                </div>
+                                                <div class="col-md-3 col-sm-3">
+                                                    <span>Req:</span> <span >${datasource.currentRecord.requiredDate | dateFormat}</span>
+                                                </div>
+                                                <div class="col-md-3 col-sm-3">
+                                                    <span>Ship:</span> <span>${datasource.currentRecord.shippedDate | dateFormat}</span>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12">
+                                <div class="panel panel-success">
+
+                                    <div class="panel-heading">Order Details</div>
+
+                                    <table class="table table-condensed">
+                                        <thead>
+                                            <tr>
+                                                <td>Product</td>
+                                                <td align="right">Unit Price</td>
+                                                <td align="right">Quantity</td>
+                                                <td align="right">Discount</td>
+                                                <td align="right">Total</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr repeat.for="od of  oderDetailsDataSource.displaySource">
+                                                <td>${od.productName}</td>
+                                                <td align="right">${od.unitPrice | currencyFormat:'£'}</td>
+                                                <td align="right">${od.quantity}</td>
+                                                <td align="right">${od.discount | numberFormat:'0.00%'}</td>
+                                                <td align="right">${od.extendedPrice | currencyFormat:'£'}</td>
+                                            </tr>
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="col-md-3 col-md-offset-9 col-sm-3 col-sm-offset-6">
+                                    <div class="panel panel-default">
+                                        <table class="table table-condensed">
+                                            <tr>
+                                                <td>Sub Total</td>
+                                                <td  align="right">${subtotal | currencyFormat:'£'}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>VAT</td>
+                                                <td  align="right">${VAT | currencyFormat:'£'}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Total</td>
+                                                <td align="right">${total | currencyFormat:'£'}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                               <a route-href="route: codeView; params.bind: {id:'orderCode'}" class="btn btn-primary pull-right">Code Details <i class="fa fa-code" aria-hidden="true"></i> </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+   
+
+</template>

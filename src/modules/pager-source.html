@@ -1,0 +1,15 @@
+﻿<template bindable="source">
+    <ul class="pagination pagination-sm" show.bind="source.dataSource.length > source.itemPerPage">
+        <li class="${source.currentPage === 0 ? 'disabled' : 'waves-effect'}">
+            <a href="#" click.delegate="source.goToPage(0)" aria-label="Previous"><span aria-hidden="true">«</span></a>
+            <a href="#" click.delegate="source.previeusPage()" aria-label="Previous"><span aria-hidden="true">‹</span></a>
+        </li>
+        <li repeat.for="p of source.totalPage" class="${p === $parent.source.currentPage ? 'active' : 'waves-effect'}">
+            <a href="#" click.delegate="$parent.source.goToPage(p)">${p + 1}</a>
+        </li>
+        <li class="${source.currentPage === source.totalPage - 1 ? 'disabled' : 'waves-effect'}">
+            <a href="#" click.delegate="source.nextPage()" aria-label="Next"><span aria-hidden="true">›</span></a>
+            <a href="#" click.delegate="source.goToPage(source.totalPage - 1)" aria-label="Next"><span aria-hidden="true">»</span></a>
+        </li>
+    </ul>
+</template>

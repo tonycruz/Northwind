@@ -1,0 +1,26 @@
+﻿<template>
+  
+    <section>
+        <div class="panel-body">
+            <h2> ${title}</h2>
+            <div class="panel panel-danger">
+                <div class="container">
+                    <h3>${category.categoryName}</h3>
+                    <hr />
+                    <h3>
+                        ${category.description}
+                    </h3>
+                    <hr />
+                    <a route-href="route:categories" class="btn btn-default">Back to List</a>
+                    <input type="button" style="margin-left:25px" value="Delete" click.trigger="delteCategory()" class="btn btn-danger">
+                    <br />
+                    <br />
+                </div>
+                 <div>
+                    <a route-href="route: codeView; params.bind: {id:'categoryDelete'}" class="btn btn-primary pull-right">Code Details <i class="fa fa-code" aria-hidden="true"></i> </a>
+                   </div>
+            </div>
+        </div>
+    </section>
+
+</template>

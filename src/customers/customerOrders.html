@@ -1,0 +1,169 @@
+﻿<template>
+    <section>
+       <!--<require from="../modules/date-format"></require>-->
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <h5> List Customers</h5>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="input-group">
+                        <input type="text" value.bind="datasource.searchCriteria" keyup.delegate="onKeyUp($event)"
+                               class="form-control" placeholder="Customers Company or Contry">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-success" tabindex="-1"
+                                    click.trigger="searchAll()">
+                                Search
+                            </button>
+                            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" tabindex="-1">
+                                <span class="caret"></span>
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu pull-right"></ul>
+                        </div><!-- /btn-group -->
+
+                    </div><!-- /input-group -->
+                    <br />
+                    <table class="table table-condensed table-responsive">
+                        <thead>
+                            <tr>
+                                <td>Account</td>
+                                <td>Company Name</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr repeat.for="customer of  datasource.displaySource">
+                                <td><a href="#" click.delegate="$parent.itemChange(customer)">${customer.customerID}</a></td>
+                                <td>${customer.companyName}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!--<compose view-model="../modules/data-source" click.delegate="itemChange(datasource.currentRecord)" model.bind="datasource"></compose>-->
+
+                    <data-source source.bind="datasource" click.delegate="itemChange(datasource.currentRecord)"></data-source>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="panel panel-default">
+             
+                <div class="panel-body">
+                    <section>
+                        
+                            <ul class="nav nav-tabs" id="CustomersAndOrdersTab">
+                                <li><a href="#customerAppTab" data-toggle="tab">customer</a></li>
+                                <li><a href="#ordersAppTab" data-toggle="tab">customer Orders</a></li>
+                            </ul>
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="customerAppTab">
+                                    <div>
+                                        <br />
+                                        <form class="form-horizontal" role="form">
+                                            <div>
+                                                <div class="form-group">
+                                                    <label for="CustomerID" class="control-label col-md-3">Customer ID</label>
+                                                    <div class="col-md-6">
+                                                        <input type="text" value.bind="datasource.currentRecord.customerID" readonly id="CustomerID" name="CustomerID" class="form-control" title="Customer ID" placeholder="Customer id" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="CompanyName" class="control-label col-md-3">Company Name</label>
+                                                    <div class="col-md-6">
+                                                        <input type="text" value.bind="datasource.currentRecord.companyName" id="CompanyName" name="CompanyName" class="form-control" title="Company Name" placeholder="Company Name" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="TextContactName" class="control-label col-md-3">Contact Name</label>
+                                                    <div class="col-md-6">
+                                                        <input type="text" value.bind="datasource.currentRecord.contactName" id="TextContactName" name="TextContactName" class="form-control" title="Contact Name" placeholder="Contact Name" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="TextContactTitle" class="control-label col-md-3">Contact title</label>
+                                                    <div class="col-md-6">
+                                                        <input type="text" value.bind="datasource.currentRecord.contactTitle" id="ContactTitle" name="TextContactTitle" class="form-control" title="Contact Title" placeholder="Contact Title" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="textAddress" class="control-label col-md-3">Address</label>
+                                                    <div class="col-md-6">
+                                                        <input type="text" id="Address" value.bind="datasource.currentRecord.address" name="textAddress" class="form-control" title="Address" placeholder="address" /><br />
+                                                    </div>
+                                                    <div class="col-md-3 col-md-offset-3">
+                                                        <input type="text" id="City" value.bind="datasource.currentRecord.city" name="TextCity" title="city" class="form-control" placeholder="City" /><br />
+                                                    </div>
+                                                    <div class="col-md-3 ">
+                                                        <input type="text" id="Region" value.bind="datasource.currentRecord.region" name="Region" class="form-control" title="Region" placeholder="Region" /><br />
+                                                    </div>
+                                                    <div class="col-md-3 col-md-offset-3">
+                                                        <input type="text" id="PostalCode" value.bind="datasource.currentRecord.postalCode" class="form-control" name="TextPostalCode" title="Post Code" placeholder="Post Code" /><br />
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input type="text" id="Country" value.bind="datasource.currentRecord.country" name="TextCountry" class="form-control" title="Country" placeholder="Country" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="TextPhone" class="control-label col-md-3">Contacts</label>
+                                                    <div class="col-md-6">
+                                                        <input type="text" id="Phone" value.bind="datasource.currentRecord.phone" class="form-control" name="TextPhone" title="phone No" placeholder="Phone No" /><br />
+                                                    </div>
+                                                    <div class="col-md-6 col-md-offset-3">
+                                                        <input type="text" id="Fax" value.bind="datasource.currentRecord.fax" name="TextFax" class="form-control" title="Fax No" placeholder="Fax No" /><br />
+                                                    </div>
+                                                    <br />
+
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-6 col-md-offset-3">
+                                                        <a class="btn btn-default" click.trigger="saveCustomer()"><span class="glyphicon glyphicon-floppy-save"> </span> Save</a>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="ordersAppTab">
+                                    <div class="col-md-12">
+                                        <br />
+                                        <div class="panel panel-success">
+                                            <div class="panel-heading">Customer Orders </div>
+                                            <table class="table table-condensed">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Order ID</th>
+                                                        <th>Order Date</th>
+                                                        <th>Required Date</th>
+                                                        <th>Shipped Date</th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr repeat.for="order of  dataSourceOrder.displaySource">
+                                                        <td>${order.orderID}</td>
+                                                        <td>${order.orderDate | dateFormat} </td>
+                                                        <td>${order.requiredDate | dateFormat}</td>
+                                                        <td>${order.shippedDate | dateFormat}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <p></p>
+                                            <data-source source.bind="dataSourceOrder" ></data-source>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                      <div>
+                        <a route-href="route: codeView; params.bind: {id:'customersOrders'}" class="btn btn-primary pull-right">Code Details <i class="fa fa-code" aria-hidden="true"></i> </a>
+                      </div>
+                    </section>
+            </div>
+        </div>
+         </div>
+    </section>
+</template>

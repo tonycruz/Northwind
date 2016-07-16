@@ -1,0 +1,13 @@
+﻿
+<template bindable="source">
+    <div if.bind="source.dataSource.length > source.itemPerPage">
+        <ul class="pager">
+            <li class="${source.currentPage === 0 ? 'disabled' : '' }">
+                <a href="#" click.trigger="source.previeusPage()">Previous</a>
+            </li>
+            <li class="${source.currentPage === source.pageCount() -1 ? 'disabled' : '' }">
+                <a href="#" click.trigger="source.nextPage()">Next</a>
+            </li>
+        </ul>
+    </div>
+</template>

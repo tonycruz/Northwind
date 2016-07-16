@@ -1,0 +1,84 @@
+﻿<template>
+    <section>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <h3> Editing ${currentCustomer.customerID}</h3>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <form class="form-horizontal" validate.bind="currentCustomer.validation" submit.trigger="saveCustomer()" role="form">
+                            <div>
+                                <div class="form-group">
+                                    <label for="CustomerID" class="control-label col-md-3">Customer ID</label>
+                                    <div class="col-md-6">
+                                        <input type="text" value.bind="currentCustomer.customerID" readonly validate="customerID" class="form-control" title="Customer ID" placeholder="Customer id" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="CompanyName" class="control-label col-md-3">Company Name</label>
+                                    <div class="col-md-6">
+                                        <input type="text" value.bind="currentCustomer.companyName" validate="companyName" class="form-control" title="Company Name" placeholder="Company Name" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="TextContactName" class="control-label col-md-3">Contact Name</label>
+                                    <div class="col-md-6">
+                                        <input type="text" value.bind="currentCustomer.contactName" validate="contactName" class="form-control" title="Contact Name" placeholder="Contact Name" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="TextContactTitle" class="control-label col-md-3">Contact title</label>
+                                    <div class="col-md-6">
+                                        <input type="text" value.bind="currentCustomer.contactTitle" validate="contactTitle" class="form-control" title="Contact Title" placeholder="Contact Title" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="textAddress" class="control-label col-md-3">Address</label>
+                                    <div class="col-md-6">
+                                        <input type="text" id="Address" value.bind="currentCustomer.address" validate="address" class="form-control" title="Address" placeholder="address" /><br />
+                                    </div>
+                                    <div class="col-md-3 col-md-offset-3">
+                                        <input type="text" id="City" value.bind="currentCustomer.city" validate="city" title="city" class="form-control" placeholder="City" /><br />
+                                    </div>
+                                    <div class="col-md-3 ">
+                                        <input type="text" id="Region" value.bind="currentCustomer.region" name="Region" class="form-control" title="Region" placeholder="Region" /><br />
+                                    </div>
+                                    <div class="col-md-3 col-md-offset-3">
+                                        <input type="text" id="PostalCode" value.bind="currentCustomer.postalCode" validate="postalCode" class="form-control" name="TextPostalCode" title="Post Code" placeholder="Post Code" /><br />
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="text" id="Country" value.bind="currentCustomer.country" validate="country" class="form-control" title="Country" placeholder="Country" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="TextPhone" class="control-label col-md-3">Contacts</label>
+                                    <div class="col-md-6">
+                                        <input type="text" id="Phone" value.bind="currentCustomer.phone" validate="phone" class="form-control" name="TextPhone" title="phone No" placeholder="Phone No" /><br />
+                                    </div>
+                                    <div class="col-md-6 col-md-offset-3">
+                                        <input type="text" id="Fax" value.bind="currentCustomer.fax" class="form-control" title="Fax No" placeholder="Fax No" /><br />
+                                    </div>
+                                    <br />
+
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-6 col-md-offset-3">
+                                          <a route-href="route:customers" class="btn btn-default"><span class="glyphicon glyphicon-hand-left"> </span>  Go back</a>
+                                         <input type="submit" disabled.bind="!currentCustomer.validation.result.isValid" value="Save" class="btn btn-primary">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div>
+                          <a route-href="route: codeView; params.bind: {id:'customersEdit'}" class="btn btn-primary pull-right">Code Details <i class="fa fa-code" aria-hidden="true"></i> </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</template>

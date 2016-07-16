@@ -1,0 +1,257 @@
+﻿<template>
+     <section>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <h5> Products</h5>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="input-group">
+                        <input type="text" value.bind="datasource.searchCriteria" keyup.delegate="onKeyUp($event)"
+                               class="form-control" placeholder="Product Name">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-success" tabindex="-1"
+                                    click.trigger="searchAll()">
+                                Search
+                            </button>
+                            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" tabindex="-1">
+                                <span class="caret"></span>
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu pull-right"></ul>
+                        </div><!-- /btn-group -->
+
+                    </div><!-- /input-group -->
+                    <br />
+                    <table class="table table-condensed table-responsive">
+                        <thead>
+                            <tr>
+                                <td>Product Name</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr repeat.for="product of  datasource.displaySource">
+                                <td><a href="#" click.delegate="$parent.itemChange(product)">${product.productName}</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!--<compose view-model="../modules/data-source" model.bind="datasource"></compose>-->
+
+                    <data-source source.bind="datasource" click.delegate="itemChange(datasource.currentRecord)"></data-source>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <h5>Product Details</h5>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <form class="form-horizontal" validate.bind="currentProducts.validation" id="formProduct" role="form" submit.trigger="saveProduct()">
+                        <div>
+                            <div>
+                                <div class="form-group">
+                                    <label for="ProductID" class="control-label col-md-3 col-sm-3">Product ID</label>
+                                    <div class="col-md-6 col-sm-6">
+                                        <input type="text" value.bind="currentProducts.productID" readonly id="ProductID" name="ProductID" class="form-control" title="ProductID" placeholder="ProductID" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="ProductName" class="control-label col-md-3">Product Name</label>
+                                    <div class="col-md-6 col-sm-6">
+                                        <input type="text" value.bind="currentProducts.productName" id="ProductName" name="ProductName" class="form-control" validate="productName" title="ProductName" placeholder="ProductName" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="SupplierID" class="control-label col-md-3">Supplier</label>
+                                    <div class="col-md-6 col-sm-6">
+                                        <!--<input type="text" value.bind="currentProducts.SupplierID" id="SupplierID" name="SupplierID" class="form-control" title="SupplierID" placeholder="SupplierID" />-->
+                                        <select id="selectedSupplier" class="form-control" value.bind="currentProducts.supplierID">
+                                            <option repeat.for="supp of suppliers" model.bind="supp.supplierID">${supp.companyName}</option>
+                                        </select>
+                                        <!--<select id="selectedCategoryID" class="form-control" value.bind="options: $parent.productModel.suppliers, optionsText: 'companyName', optionsValue: 'supplierID', value: supplierID, optionsCaption: 'Supplier...'"></select>-->
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="CategoryID" class="control-label col-md-3">Category</label>
+                                    <div class="col-md-6 col-sm-6">
+                                        <select id="selectedcategory" class="form-control" value.bind="currentProducts.categoryID">
+                                            <option repeat.for="cat of categories" model.bind="cat.categoryID">${cat.categoryName}</option>
+                                        </select>
+                                           
+                                      </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="QuantityPerUnit" class="control-label col-md-3">Quantity Per Unit</label>
+                                    <div class="col-md-6 col-sm-6">
+                                        <input type="text" value.bind="currentProducts.quantityPerUnit" validate="quantityPerUnit" id="QuantityPerUnit" name="QuantityPerUnit" class="form-control" title="QuantityPerUnit" placeholder="QuantityPerUnit" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="UnitPrice" class="control-label col-md-3">Unit Price</label>
+                                    <div class="col-md-6 col-sm-6">
+                                        <input type="text" value.bind="currentProducts.unitPrice" id="UnitPrice" validate="unitPrice" name="UnitPrice" class="form-control" title="UnitPrice" placeholder="UnitPrice" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="UnitsInStock" class="control-label col-md-3">Units In Stock</label>
+                                    <div class="col-md-6">
+                                        <input type="text" value.bind="currentProducts.unitsInStock" validate="unitsInStock" id="UnitsInStock" name="UnitsInStock" class="form-control" title="UnitsInStock" placeholder="UnitsInStock" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="UnitsOnOrder" class="control-label col-md-3">Units On Order</label>
+                                    <div class="col-md-6 col-sm-6">
+                                        <input type="text" value.bind="currentProducts.unitsOnOrder" validate="unitsOnOrder" id="UnitsOnOrder" name="UnitsOnOrder" class="form-control" title="UnitsOnOrder" placeholder="UnitsOnOrder" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="ReorderLevel" class="control-label col-md-3">Reorder Level</label>
+                                    <div class="col-md-6 col-sm-6">
+                                        <input type="text" value.bind="currentProducts.reorderLevel" validate="reorderLevel" id="ReorderLevel" name="ReorderLevel" class="form-control" title="ReorderLevel" placeholder="ReorderLevel" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-offset-3 col-sm-3">
+                                    <input type="checkbox" checked.bind="currentProducts.discontinued" id="change-color-switch" data-animated="true" />
+                                </div>
+
+                            </div>
+                            <br />
+                            <br />
+                            <div class="form-group">
+                              
+                                <div class="col-md-6 col-sm-6 col-md-offset-3 col-sm-offset-3">
+                                    <a class="btn btn-primary" click.trigger="showAddNewModal()"><span class="fa fa-plus"> </span> Add New</a>
+                                    <!--<a class="btn btn-primary" style="margin-left:15px" click.trigger="saveProduct()"><span class="glyphicon glyphicon-floppy-save"> </span> Save</a>-->
+                                    <input type="submit" value="Save product" style="margin-left:15px" disabled.bind="!currentProducts.validation.result.isValid" class="btn btn-primary">
+                                    <a class="btn btn-danger" style="margin-left:15px" click.trigger="showDeleteModal()"><span class="fa fa-trash-o"> </span> Delete</a>
+                                </div>
+                            </div>
+                          
+                        </div>
+                    </form>
+                  <div>
+                     <a route-href="route: codeView; params.bind: {id:'productCode'}" class="btn btn-primary pull-right">Code Details <i class="fa fa-code" aria-hidden="true"></i> </a>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--Main Panel ends here -->
+    <!--confirm Delete Product Modal starts here -->
+    <div id="confirmDeleteProductModal" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Confirm Delete</h3>
+                </div>
+                <div class="modal-body">
+                    <span>Product To Delete</span> <span>${currentProducts.productName}</span>
+                    <p>Deleting this item cannon be undone.  Are you sure?</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" data-dismiss="modal">Close</button>
+                    <button class="btn btn-danger" click.delegate="deleteProduct()">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--confirm Delete Product Modal ends here -->
+    <!--Add new Product Modal-->
+    <div id="confirmAddNewProductModal" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Confirm New Product</h3>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" validate.bind="newProduct.validation" id="formNewProduct" role="form" submit.trigger="saveNewProduct()">
+                        <div>
+                            <div>
+                                <div class="form-group">
+                                    <label for="ProductName" class="control-label col-md-3">Product Name</label>
+                                    <div class="col-md-6">
+                                        <input type="text" value.bind="newProduct.productName" id="ProductName" required name="ProductName" class="form-control" validate="productName" title="ProductName" placeholder="ProductName" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="SupplierID" class="control-label col-md-3">Supplier</label>
+                                    <div class="col-md-6">
+                                        <!--<input type="text" value.bind="newProduct.SupplierID" id="SupplierID" name="SupplierID" class="form-control" title="SupplierID" placeholder="SupplierID" />-->
+                                        <select id="selectedSupplier" class="form-control" value.bind="newProduct.supplierID">
+                                            <option repeat.for="supp of suppliers" model.bind="supp.supplierID">${supp.companyName}</option>
+                                        </select>
+                                        <!--<select id="selectedCategoryID" class="form-control" value.bind="options: $parent.productModel.suppliers, optionsText: 'companyName', optionsValue: 'supplierID', value: supplierID, optionsCaption: 'Supplier...'"></select>-->
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="CategoryID" class="control-label col-md-3">Category</label>
+                                    <div class="col-md-6">
+                                        <select id="selectedcategory" class="form-control" value.bind="newProduct.categoryID">
+                                            <option repeat.for="cat of categories" model.bind="cat.categoryID">${cat.categoryName}</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="QuantityPerUnit" class="control-label col-md-3">Quantity Per Unit</label>
+                                    <div class="col-md-6">
+                                        <input type="text" value.bind="newProduct.quantityPerUnit" required validate="quantityPerUnit" id="QuantityPerUnit" name="QuantityPerUnit" class="form-control" title="QuantityPerUnit" placeholder="QuantityPerUnit" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="UnitPrice" class="control-label col-md-3">Unit Price</label>
+                                    <div class="col-md-6">
+                                        <input type="text" value.bind="newProduct.unitPrice" id="UnitPrice" required validate="unitPrice" name="UnitPrice" class="form-control" title="UnitPrice" placeholder="UnitPrice" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="UnitsInStock" class="control-label col-md-3">Units In Stock</label>
+                                    <div class="col-md-6">
+                                        <input type="text" value.bind="newProduct.unitsInStock" validate="unitsInStock" required id="UnitsInStock" name="UnitsInStock" class="form-control" title="UnitsInStock" placeholder="UnitsInStock" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="UnitsOnOrder" class="control-label col-md-3">Units On Order</label>
+                                    <div class="col-md-6">
+                                        <input type="text" value.bind="newProduct.unitsOnOrder" validate="unitsOnOrder" id="UnitsOnOrder" name="UnitsOnOrder" class="form-control" title="UnitsOnOrder" placeholder="UnitsOnOrder" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="ReorderLevel" class="control-label col-md-3">Reorder Level</label>
+                                    <div class="col-md-6">
+                                        <input type="text" value.bind="newProduct.reorderLevel" validate="reorderLevel" id="ReorderLevel" name="ReorderLevel" class="form-control" title="ReorderLevel" placeholder="ReorderLevel" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-offset-3 col-sm-3">
+                                    <input type="checkbox" checked.bind="newProduct.discontinued" id="change-color-switch" data-animated="true" />
+                                </div>
+
+                            </div>
+                            <br />
+                            <br />
+                            <div class="form-group">
+
+                                <div class="form-group">
+                                    <div class="col-md-6 col-md-offset-3">
+                                        <input type="submit" value="Save New Product" disabled.bind="!newProduct.validation.result.isValid" class="btn btn-primary btn-lg">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</template>

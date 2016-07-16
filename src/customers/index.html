@@ -1,0 +1,15 @@
+﻿<template>
+  <div class="au-animate">
+        <section class="alert alert-success">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <!--<a id="customerAddNewid" route-href="route:customerNew" data-content="Add New Customer" class="indexMenuOver"><i class="fa fa-plus fa-4x"></i></a>-->
+                    <a id="customerManagerid" route-href="route:customers"  data-content="Customer Manager" style="margin-left:5px" class="indexMenuOver"><i class="fa fa-users fa-4x"></i></a>
+                    <a id="custMasterDetailsid" route-href="route:customersMaster" data-content="Customer Master Details" class="indexMenuOver" style="margin-left:50px"><i class="fa fa-windows fa-4x" style="color:green"></i></a>
+                    <a id="custOrdersid" route-href="route:customerOrders" data-content="Customer Orders" class="indexMenuOver" style="margin-left:50px"><i class="fa fa-windows fa-4x" style="color:purple"></i></a>
+                </div>
+            </div>
+        </section>
+        <router-view></router-view>
+    </div>
+</template>

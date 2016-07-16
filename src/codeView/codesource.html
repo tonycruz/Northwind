@@ -1,0 +1,24 @@
+<template>
+    <require from="../../jspm_packages/github/PrismJS/prism@1.5.0/themes/prism.css"></require>
+    <require from='../modules/code-page.html'></require>
+     <section>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                Client Code
+            </div>
+            <div class="panel-body">
+                <code-page codelist.bind="client"></code-page>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                Server  Code
+            </div>
+            <div class="panel-body">
+                <code-page codelist.bind="server"></code-page>
+            </div>
+        </div>
+    </section>
+ </template>

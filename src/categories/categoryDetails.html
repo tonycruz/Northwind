@@ -1,0 +1,29 @@
+﻿<template>
+    <section>
+        <div>
+            <br />
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h2> ${title}</h2>
+                    <div class="panel panel-default">
+                        <div class="container">
+                            <h3>${category.categoryName}</h3>
+                            <hr />
+                            <h3>
+                                ${category.description}
+                            </h3>
+                            <hr />
+                            <a route-href="route:categories" class="btn btn-default">Back to List</a>
+                            <br />
+                            <br />
+                            <div>
+                               <a route-href="route: codeView; params.bind: {id:'categoryDetails'}" class="btn btn-primary pull-right">Code Details <i class="fa fa-code" aria-hidden="true"></i> </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</template>
