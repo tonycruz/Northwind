@@ -1,7 +1,10 @@
 export class Welcome {
-    header = 'Welcome to Aurelia!';
-    firstName = 'Antonio';
-    lastName = 'Cruz';
+    constructor(){
+     this.header = 'Welcome to Aurelia!';
+     this.firstName = 'Antonio';
+     this.lastName = 'Cruz';
+    }
+    
     get fullName(){
         return `${this.firstName} ${this.lastName}`;
     }
