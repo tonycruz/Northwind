@@ -29,7 +29,7 @@ export class CodeSource{
        var clipboard = new Clipboard('.codeview');
 
        clipboard.on('success', function(e) {
-           toastr.success("code is in your clipboard", "Code");
+           toastr.success("Copied to clipboard!", "Code");
         });
     }
 }
