@@ -1,6 +1,5 @@
 ﻿import {inject} from "aurelia-framework";
-import {ContextBaseFetch} from "../modules/contextBaseFetch";
-import {AppConstants} from "../modules/appConstants";
+import {AppConstants,ContextBaseFetch} from "../modules/nwlib";
 @inject(ContextBaseFetch)
 export class CategoriesDataContext {
       url = AppConstants.urlBase +"CategoriesApi"; 

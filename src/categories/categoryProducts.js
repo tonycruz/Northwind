@@ -1,5 +1,5 @@
 ﻿import {inject} from "aurelia-framework";
-import {SourceManager} from "../modules/SourceManager";
+import {SourceManager,} from "../modules/nwlib";
 import {CategoriesDataContext} from "./categoriesDataContext";
 import {CategoryCode} from "./categoryInfo";
 

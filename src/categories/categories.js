@@ -1,6 +1,6 @@
 import {inject} from "aurelia-framework";
-import {SourceManager} from "../modules/SourceManager";
 import {CategoriesDataContext} from "./categoriesDataContext";
+import {SourceManager,} from "../modules/nwlib";
 import _ from 'lodash';
 
 @inject(SourceManager, CategoriesDataContext)

@@ -4,7 +4,7 @@ import _ from 'lodash';
 import 'bootstrap';
 import 'toastr';
 
-import {SourceManager} from "../modules/SourceManager";
+import {SourceManager,} from "../modules/nwlib";
 import {CategoriesDataContext} from "./categoriesDataContext";
 import {CategoryInfo} from "./categoryInfo";
 

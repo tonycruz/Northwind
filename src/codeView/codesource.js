@@ -1,6 +1,6 @@
 
 import {inject} from "aurelia-framework";
-import {ContextCodeBase} from "../modules/ContextCodeBase";
+import {ContextCodeBase,} from "../modules/nwlib";
 import {Router} from "aurelia-router";
 import 'bootstrap';
 import * as prism from 'prism';
