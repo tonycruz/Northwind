@@ -4,6 +4,8 @@ import {SourceManager} from "../modules/SourceManager";
 import {OrderNewDataContext, OrderDetailsDataContext} from "./OrdersDataContext";
 import {OrderDetails} from "./orderDetails";
 import {OrderInfo} from "./orderInfo";
+import {OrderDetailInfo} from "./orderDetailInfo"
+
 
 import _ from 'lodash';
 import moment from "moment";
@@ -196,20 +198,14 @@ export class OrderNew {
      insert Product Into Order Details 
     */
     insertProductIntoOrderDetails() {
-        var od = {
-            "orderID": this.currentCustomerOrder.orderID,
-            "productID": this.productToOrderItem.productID,
-            "productName": this.productToOrderItem.productName,
-            "unitPrice": this.productToOrderItem.unitPrice,
-            "quantity": this.productToOrderItem.qty,
-            "discount": this.productToOrderItem.discountValue,
-            "extendedPrice": this.productToOrderItem.total
-        }
+        var orderDetails = OrderDetailInfo.toJson(this.productToOrderItem,
+                                                  this.currentCustomerOrder.orderID)
         var odResults;
-        this.odList.save(od)
+        this.odList.save(orderDetails)
             .then(odResults=> {
                 odResults = odResults;
-                this.productToOrderItem.orderDetailsID = odResults.orderDetailsID;
+                // orderDetails.orderDetailID = odResults.orderDetailID;
+                this.productToOrderItem.orderDetailID = odResults.orderDetailID;
                 this.currentOrderDetails.push(this.productToOrderItem);
                 $("#productToOrderModal").modal('hide');
                 this.itemChange();
@@ -234,10 +230,10 @@ export class OrderNew {
     */
     deleteOrderDetails() {
        
-        this.odList.deleteData(this.deleteOrderItem.orderID,this.deleteOrderItem.productID)
+        this.odList.deleteData(this.deleteOrderItem.orderDetailID)
             .then(odResults=> {
                 odResults = odResults;
-                this.deleteOrderDetailsRefresh(this.deleteOrderItem);
+                this.deleteOrderDetailsRefresh(this.deleteOrderItem.orderDetailID);
             });
     }
 
@@ -247,7 +243,7 @@ export class OrderNew {
     deleteOrderDetailsRefresh(id) {
         var deleteIndex = _.findIndex(this.currentOrderDetails,
             function (item) {
-                return item.orderDetailsID == id;
+                return item.orderDetailID == id;
             });
         this.currentOrderDetails.splice(deleteIndex, 1);
         $("#confirmDeleteOrderDetailsModal").modal('hide');

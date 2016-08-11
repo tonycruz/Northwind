@@ -82,9 +82,9 @@ export class OrderDetailsDataContext {
          this.context.apiName = this.apiUrl;
         return this.context.getById(id);
     }
-    deleteData(id,prodid) {
+    deleteData(id) {
          this.context.apiName = this.apiUrl;
-        return this.context.deleteData(id,prodid);
+        return this.context.deleteByID(id);
 
     }
     save(customer) {

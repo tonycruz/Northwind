@@ -1,14 +1,17 @@
 ﻿export class OrderDetails {
-     orderDetailsID = 0;
-     qty = 0;
-     discount = 0;
-     discountValue = 0;
-     total= 0;
+    
+     
     constructor(productName, unitPrice, productID,  orderID) {
         this.productName = productName; 
         this.unitPrice = unitPrice;
         this.productID = productID;
         this.orderID =orderID
+        this.orderDetailID =0;
+        this.qty = 0;
+        this.discount = 0;
+        this.discountValue = 0;
+        this.total= 0;
+
     }
     getTotal() {
         this.discountValue = this.discount /100
